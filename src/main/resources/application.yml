@@ -1,0 +1,16 @@
+spring:
+ application:
+  name: expense-tracker
+ datasource:
+  url: ${db.url}
+  username: ${db.username}
+  password: ${db.password}
+  driver-class-name: org.postgresql.Driver
+ jpa:
+  hibernate:
+   ddl-auto: update
+  show_sql: true
+  properties:
+   hibernate:
+    format_sql: true
+    dialect: org.hibernate.dialect.PostgreSQLDialect
