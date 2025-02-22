@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
-    @Query("SELECT e from Expense e where e.user.userId=:userId")
-    Optional<List<Expense>> findByUserId(@Param("userId") Integer userId);
+    @Query("SELECT e from Expense e where e.user.username=:username")
+    Optional<List<Expense>> findExpenseByUsername(@Param("username") String username);
 
 }

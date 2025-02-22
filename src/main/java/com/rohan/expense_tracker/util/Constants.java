@@ -6,5 +6,9 @@ public class Constants {
     public static final String STATUS_FAIL = "Fail";
     public static final String JWT_SUCCESS_DESC = "JWT Token Generated";
     public static final String JWT_FAIL_DESC = "Please Try Again, Invalid Credentials!";
+    public static final String USER_SUCCESSFULLY_ADDED = "User Successfully Added!";
+    public static final String USER_CANNOT_BE_ADDED = "User Cannot Be Added, Please Try Again!";
+    public static final String EXPENSE_ADDED_SUCCESSFULLY = "Expense added successfully!";
+    public static final String EXPENSE_CANNOT_BE_ADDED = "Expense cannot be added!";
 
 }

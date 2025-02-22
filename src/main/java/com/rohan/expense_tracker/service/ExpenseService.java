@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ExpenseService {
 
-    List<ExpenseDto> getAllExpense(Integer userId);
+    List<ExpenseDto> getAllExpense(String username);
+
+    Boolean addExepnse(ExpenseDto expenseDto, String username);
 
 }
