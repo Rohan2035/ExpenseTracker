@@ -4,7 +4,6 @@ import com.rohan.expense_tracker.dto.ApiResponse;
 import com.rohan.expense_tracker.dto.CredentialsDto;
 import com.rohan.expense_tracker.dto.JwtResponse;
 import com.rohan.expense_tracker.dto.UserDto;
-import com.rohan.expense_tracker.exception.BadCredentialsException;
 import com.rohan.expense_tracker.service.UserService;
 import com.rohan.expense_tracker.util.ApplicationHelper;
 import com.rohan.expense_tracker.util.JwtUtility;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -86,11 +86,15 @@ public class UserController {
 
 			return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 			
-		} catch(Exception e) {
+		} catch(BadCredentialsException e) {
 
 			LOGGER.error("", e);
 
-			throw new BadCredentialsException(e.getMessage());
+			throw e;
+
+		} catch(Exception e) {
+
+			throw e;
 
 		}
 		

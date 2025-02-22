@@ -15,4 +15,8 @@ public class Constants {
     public static final String EXPENSE_NOT_FOUND = "Expense not found!";
     public static final String BAD_CREDENTIALS = "Username/Password is incorrect, Please try again!";
 
+    public static final String ERROR = "Server Error";
+
+    public static final String INTERNAL_SERVER_ERROR = "Some issue with server, please try again later.";
+
 }

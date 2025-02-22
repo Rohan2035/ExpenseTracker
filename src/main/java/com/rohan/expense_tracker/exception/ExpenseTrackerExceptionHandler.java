@@ -5,8 +5,10 @@ import com.rohan.expense_tracker.util.ApplicationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import static com.rohan.expense_tracker.util.Constants.*;
 
 @ControllerAdvice
@@ -33,6 +35,13 @@ public class ExpenseTrackerExceptionHandler {
     public ResponseEntity<ApiResponse> badCredentialsExceptionHandler(BadCredentialsException ex) {
 
         return new ResponseEntity<>(applicationHelper.createApiResponse(USER_NOT_FOUND, BAD_CREDENTIALS), HttpStatus.UNAUTHORIZED);
+
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> exceptionHandler(Exception ex) {
+
+        return new ResponseEntity<>(applicationHelper.createApiResponse(ERROR, INTERNAL_SERVER_ERROR), HttpStatus.UNAUTHORIZED);
 
     }
 
