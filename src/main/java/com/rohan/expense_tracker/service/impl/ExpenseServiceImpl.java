@@ -3,6 +3,8 @@ package com.rohan.expense_tracker.service.impl;
 import com.rohan.expense_tracker.dto.ExpenseDto;
 import com.rohan.expense_tracker.entity.Expense;
 import com.rohan.expense_tracker.entity.User;
+import com.rohan.expense_tracker.exception.ExpenseNotFoundException;
+import com.rohan.expense_tracker.exception.UserNotFoundException;
 import com.rohan.expense_tracker.repository.ExpenseRepository;
 import com.rohan.expense_tracker.repository.UserRepository;
 import com.rohan.expense_tracker.service.ExpenseService;
@@ -28,8 +30,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public List<ExpenseDto> getAllExpense(String username) {
 
         List<Expense> expenseList = expenseRepository.findExpenseByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Expenses Not Found!"));
-
+                .orElseThrow(() -> new ExpenseNotFoundException("Expense not found!"));
 
         return expenseList.stream()
                 .map(expense -> applicationHelper.convertToExpenseDto(expense))
@@ -41,7 +42,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public Boolean addExepnse(ExpenseDto expenseDto, String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new RuntimeException("User not found"));
+                new UserNotFoundException("User not found!"));
 
         Expense expense = applicationHelper.convertToExpenseEntity(expenseDto);
         expense.setUser(user);

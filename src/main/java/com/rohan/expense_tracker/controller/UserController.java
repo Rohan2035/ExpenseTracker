@@ -4,9 +4,12 @@ import com.rohan.expense_tracker.dto.ApiResponse;
 import com.rohan.expense_tracker.dto.CredentialsDto;
 import com.rohan.expense_tracker.dto.JwtResponse;
 import com.rohan.expense_tracker.dto.UserDto;
+import com.rohan.expense_tracker.exception.BadCredentialsException;
 import com.rohan.expense_tracker.service.UserService;
 import com.rohan.expense_tracker.util.ApplicationHelper;
 import com.rohan.expense_tracker.util.JwtUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +17,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.rohan.expense_tracker.util.Constants.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -38,9 +44,6 @@ public class UserController {
 
 	@Autowired
 	private ApplicationHelper applicationHelper;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/add-user")
 	public ResponseEntity<ApiResponse> addUser(@RequestBody UserDto userDto) {
@@ -70,7 +73,7 @@ public class UserController {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					credentialsDto.getUsername(),
 					credentialsDto.getPassword()));
-			
+
 			UserDetails userDetails = userDetailsService.loadUserByUsername(credentialsDto.getUsername());
 
 			String jwtToken = jwtUtility.generateToken(userDetails.getUsername());
@@ -83,9 +86,11 @@ public class UserController {
 
 			return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 			
-		} catch (Exception e) {
+		} catch(Exception e) {
 
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			LOGGER.error("", e);
+
+			throw new BadCredentialsException(e.getMessage());
 
 		}
 		
